@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Ad;
+use App\Entity\Image;
 use App\Form\AdType;
 use App\Repository\AdRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,15 +45,28 @@ class AdController extends AbstractController
     {
 
         $ad = new Ad();
-        
+
+        $image = new Image();
+
         $form = $this->createForm(AdType::class, $ad);
 
         $form->handleRequest($request);
 
 
         if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($ad->getImages() as $image) {
+                # code...
+                $image->setAd($ad);
+                $manager->persist($image);
+            }
+
             $manager->persist($ad);
-            $manager -> flush();
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                "L'annonce <strong>" . $ad->getTitle() . "</strong> a bien été enregistrée"
+            );
 
             return $this->redirectToRoute('ads_show', [
                 'slug' => $ad->getSlug()
