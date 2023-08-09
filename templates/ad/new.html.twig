@@ -41,16 +41,18 @@
 				<div class="row">
 					<div class="col">
 						{{ form_widget(form.url)}}
+						{{ form_errors(form.url)}}
 					</div>
 
 					<div class="col">
 						{{ form_widget(form.caption)}}
+						{{ form_errors(form.caption) }}
 					</div>
 				</div>
 			</div>
 
 			<div class="col-2">
-				<button type="button" data-action= "delete" data-target="#block_{{id}}" class="btn btn-danger">X</button>
+				<button type="button" data-action="delete" data-target="#block_{{id}}" class="btn btn-danger">X</button>
 			</div>
 		</div>
 	</div>
@@ -62,36 +64,36 @@
 
 {% block javascripts %}
 
-<script>
-	$(document).ready(function () {
-		$('#add-image').click(function () { // Je récupère le numéro des futurs champs que je vais créer
-			// const index = $('#ad_images div.form-group').length;
+	<script>
+		$(document).ready(function () {
+$('#add-image').click(function () {
+// Je récupère le numéro des futurs champs que je vais créer
+// const index = $('#ad_images div.form-group').length;
 
-			let index =+$('#widgets-counter').val();
+let index = + $('#widgets-counter').val();
 
-			// Je récupère le prototype des entrées
-			let tmpl = $('#ad_images').data('prototype');
+// Je récupère le prototype des entrées
+let tmpl = $('#ad_images').data('prototype');
 
-			const newTmpl = tmpl.replace(/__name__/g, index);
+const newTmpl = tmpl.replace(/__name__/g, index);
 
-			// J'injecte ce code au sein de la div
-			$('#ad_images').append(newTmpl);
+// J'injecte ce code au sein de la div
+$('#ad_images').append(newTmpl);
 
-			$('#widgets-counter').val(index + 1);
+$('#widgets-counter').val(index + 1);
 
-			handleDeleteButtons();
+handleDeleteButtons();
 
-		});
-	});
+});
+});
 
-	function handleDeleteButtons() {
-    	$('button[data-action="delete"]').click(function() {
-       		const target = this.dataset.target;
-        	$(target).remove(); // Supprime l'élément parent correspondant à l'entrée de l'image
-    	});
-	}
-
-</script> 
+function handleDeleteButtons() {
+$('button[data-action="delete"]').click(function () {
+const target = this.dataset.target;
+$(target).remove(); // Supprime l'élément parent correspondant à l'entrée de l'image
+});
+}
+	</script>
 
 
 {% endblock %}
