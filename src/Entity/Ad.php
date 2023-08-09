@@ -219,4 +219,5 @@ class Ad
 
         return $this;
     }
+
 }
