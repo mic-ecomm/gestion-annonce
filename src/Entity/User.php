@@ -2,13 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\HasLifecycleCallbacks
+
  */
 class User
 {
@@ -64,9 +67,24 @@ class User
      */
     private $ads;
 
+
     public function __construct()
     {
         $this->ads = new ArrayCollection();
+    }
+
+    /**
+     * Permet d'initialiser un slug !
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     * 
+     */
+    public function initializeSlug()
+    {
+        if (empty($this->slug)) {
+            $slugify = new Slugify();
+            $this->slug = $slugify->slugify($this->firstName . ' ' . $this->lastName);
+        }
     }
 
     public function getId(): ?int
