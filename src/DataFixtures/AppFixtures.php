@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Ad;
 use App\Entity\Image;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
@@ -12,8 +13,27 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-
         $faker = Factory::create('fr-FR');
+
+        //Nous gérons les utilisateurs
+
+        $users = [];
+
+        for ($i = 0; $i <= 10; $i++) {
+            $user = new User();
+            $user->setFirstName($faker->firstname)
+                ->setLastName($faker->lastname)
+                ->setEmail($faker->email)
+                ->setIntroduction($faker->sentence())
+                ->setDescription('<p>' . implode('</p><p>', $paragraphs) . '</p>')
+                ->setHash('password');
+
+            $manager->persist($user);
+            $users[] = $user;
+        }
+
+
+        //Nous gérons les annonces
         
         for ($i = 1; $i <= 30; $i++) {
 
@@ -34,12 +54,12 @@ class AppFixtures extends Fixture
                 ->setPrice(mt_rand(40, 200))
                 ->setRooms(mt_rand(1, 5));
 
-            for ($j = 0; $j < mt_rand(2, 5); $j++) { 
+            for ($j = 0; $j < mt_rand(2, 5); $j++) {
                 $randomNumber = mt_rand(1, 55000);
                 $imageUrl = "https://picsum.photos/800/600?random=" . $randomNumber;
 
                 $image = new Image();
-                $image->setUrl($imageUrl) 
+                $image->setUrl($imageUrl)
                     ->setCaption($faker->sentence())
                     ->setAd($ad);
                 $manager->persist($image);
