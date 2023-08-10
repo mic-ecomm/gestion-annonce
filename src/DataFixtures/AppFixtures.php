@@ -8,9 +8,17 @@ use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
+    private $encoder;
+
+    public function __construct(UserPasswordEncoderInterface $encoder)
+    {
+        $this->encoder = $encoder;
+    }
+
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr-FR');
@@ -30,18 +38,19 @@ class AppFixtures extends Fixture
 
             $picture .= ($genre == "male" ? 'men/' : 'women/') . $pictureId;
 
+            $hash = $this->encoder->encodePassword($user, 'password');
+
             $user->setFirstName($faker->firstname)
                 ->setLastName($faker->lastname)
                 ->setEmail($faker->email)
                 ->setIntroduction($faker->sentence())
                 ->setDescription('<p>' . implode('</p><p>', $faker->paragraphs(3)) . '</p>')
-                ->setHash('password')
+                ->setHash($hash)
                 ->setPicture($picture);
 
             $manager->persist($user);
             $users[] = $user;
         }
-
 
         //Nous gérons les annonces
 
@@ -58,8 +67,6 @@ class AppFixtures extends Fixture
 
             $user = $users[mt_rand(0, count($users) - 1)];
 
-
-
             $ad = new Ad;
             $ad->setTitle($title)
                 ->setCoverImage($coverImage)
@@ -72,7 +79,6 @@ class AppFixtures extends Fixture
             for ($j = 0; $j < mt_rand(2, 5); $j++) {
                 $randomNumber = mt_rand(1, 55000);
                 $imageUrl = "https://picsum.photos/800/600?random=" . $randomNumber;
-
                 $image = new Image();
                 $image->setUrl($imageUrl)
                     ->setCaption($faker->sentence())
