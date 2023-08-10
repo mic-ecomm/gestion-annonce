@@ -13,7 +13,7 @@
 			<div class="col-md-6">
 				<div class="bg-light py-3 px-3">
 					<h1>Connectez-vous</h1>
-					<form action="">
+					<form action="{{ path('account_login') }}" method="post">
 						<div class="form-group">
 							<label for="email">Email</label>
 							<input type="text" name="_username" id="email " class="form-control" placeholder="Adresse email..." required>
