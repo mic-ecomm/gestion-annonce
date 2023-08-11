@@ -61,6 +61,8 @@ class AccountController extends AbstractController
         $user = new User();
 
         $form = $this->createForm(RegistrationType::class, $user);
+
+        
         return $this->render(
             'account/registration.html.twig',
             [
