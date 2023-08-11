@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use App\Form\RegistrationType;
 use GuzzleHttp\Psr7\Response as Psr7Response;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class AccountController extends AbstractController
@@ -43,5 +45,28 @@ class AccountController extends AbstractController
     public function logout()
     {
         //Ne me rien ici
+    }
+
+
+    /**
+     * Qui permet d'afficher le formulaire d'inscription
+     * 
+     * @Route("/register", name="account_register")
+     * 
+     * @return Response
+     * 
+     */
+    public function register()
+    {
+        $user = new User();
+
+        $form = $this->createForm(RegistrationType::class, $user);
+        return $this->render(
+            'account/registration.html.twig',
+            [
+                'form' => $form->createView()
+            ]
+
+        );
     }
 }
