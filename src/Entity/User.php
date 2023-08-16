@@ -68,6 +68,11 @@ class User implements UserInterface
      */
     private $ads;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $securityCode;
+
 
     public function __construct()
     {
@@ -219,7 +224,20 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getRoles() {
+    public function getSecurityCode(): ?string
+    {
+        return $this->securityCode;
+    }
+
+    public function setSecurityCode(string $securityCode): self
+    {
+        $this->securityCode = $securityCode;
+
+        return $this;
+    }
+
+    public function getRoles()
+    {
         return ['ROLE_USER'];
     }
 
@@ -228,11 +246,16 @@ class User implements UserInterface
         return $this->hash;
     }
 
-    public function getSalt() {}
+    public function getSalt()
+    {
+    }
 
-    public function getUsername() {
+    public function getUsername()
+    {
         return $this->email;
     }
 
-    public function eraseCredentials() {}
+    public function eraseCredentials()
+    {
+    }
 }
