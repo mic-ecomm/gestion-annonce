@@ -4,11 +4,8 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationType;
-use Symfony\Component\Mime\Email;
 use Doctrine\ORM\EntityManagerInterface;
-use GuzzleHttp\Psr7\Response as Psr7Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
@@ -63,7 +60,7 @@ class AccountController extends AbstractController
      * @return Response
      * 
      */
-    public function register(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, MailerInterface $mailer)
+    public function register(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder)
     {
         $user = new User();
 
@@ -72,17 +69,7 @@ class AccountController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $securityCode = rand(1000, 9999);
-            $user->setSecurityCode($securityCode);
             $hash = $encoder->encodePassword($user, $user->getHash());
-            // Envoyer l'e-mail avec le code d'accès
-            $email = (new Email())
-            ->from('jmslfoo@gmail.com') // Sender's email address
-            ->to('jmslfoo@gmail.com')   // Recipient's email address
-            ->subject('Subject of the email')
-            ->text('This is the plain text body of the email.') 
-            ->html('<p>This is the <b>HTML</b> body of the email.</p>');
-            $mailer->send($email);
             $user->setHash($hash);
             $manager->persist($user);
             $manager->flush();;
