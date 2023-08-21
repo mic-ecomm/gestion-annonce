@@ -238,6 +238,5 @@ class Ad
         $this->author = $author;
 
         return $this;
-    }
-    
+    }  
 }

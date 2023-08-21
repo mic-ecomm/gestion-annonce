@@ -18,7 +18,6 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 class AdType extends ApplicationType
 {
                     
-    
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

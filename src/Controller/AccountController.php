@@ -72,7 +72,7 @@ class AccountController extends AbstractController
             $hash = $encoder->encodePassword($user, $user->getHash());
             $user->setHash($hash);
             $manager->persist($user);
-            $manager->flush();;
+            $manager->flush();
 
             $this->addFlash(
                 'success',
@@ -81,7 +81,6 @@ class AccountController extends AbstractController
 
             return $this->redirectToRoute('account_login');
         }
-
 
         return $this->render(
             'account/registration.html.twig',
