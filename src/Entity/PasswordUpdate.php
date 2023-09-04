@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use App\Repository\PasswordUpdateRepository;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
@@ -21,8 +19,7 @@ class PasswordUpdate
     private $newPassword;
 
     /**
-     *
-     *@Assert\EqualTo(propertyPath="newPassword", message=Vous n'avez pas  correctement confirmé votre nouveau mot de passe"")
+     * @Assert\EqualTo(propertyPath="newPassword", message="Vous n'avez pas correctement confirmé votre nouveau mot de passe")
      */
     private $confirmPassword;
 
