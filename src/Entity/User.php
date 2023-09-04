@@ -9,13 +9,15 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\HasLifecycleCallbacks
- * @@UniqueEntity(
- *     fields={"email"}
- * )   message="Un autre utilisateur s'est déjà inscrit avec cette adresse email"
+ * @UniqueEntity(
+ *     fields={"email"},
+ *      message="Un autre utilisateur s'est déjà inscrit avec cette adresse email"
+ * )   
  */
 class User implements UserInterface
 {
@@ -58,6 +60,11 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255)
      */
     private $hash;
+
+    /**
+     *@Assert\EqualTo(propertyPath="hash", message="Vous n'avez pas correctement configuré votre mot de passe !")
+     */
+    public $passwordConfirm;
 
     /**
      * @ORM\Column(type="string", length=255)

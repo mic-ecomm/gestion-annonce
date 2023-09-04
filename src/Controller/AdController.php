@@ -87,7 +87,7 @@ class AdController extends AbstractController
      * @return Response
      */
     public function show(Ad $ad)
-    {
+    { 
         return $this->render('ad/show.html.twig', [
             "ad" => $ad
         ]);

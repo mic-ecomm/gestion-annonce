@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\PasswordUpdate;
 use App\Entity\User;
+use App\Form\AccountType;
 use App\Form\RegistrationType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -88,6 +90,57 @@ class AccountController extends AbstractController
                 'form' => $form->createView()
             ]
 
+        );
+    }
+
+    /**
+     * Qui permet d'afficher le formulaire d'inscription
+     * 
+     * @Route("/account/profile", name="account_profile")
+     * 
+     * @return Response
+     * 
+     */
+    public function profile(Request $request, EntityManagerInterface $manager)
+    {
+        $user = $this->getUser();
+
+        $form = $this->createForm(AccountType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $manager->persist($user);
+            $manager->flush();
+            $this->addFlash('success', 'Les données du profil ont été enregistrées avec succés');
+        }
+
+        return $this->render(
+            'account/profile.html.twig',
+            [
+                'form' => $form->createView()
+            ]
+        );
+    }
+
+    /**
+     * Permet de modifier le mot de passe
+     * 
+     * @Route("/account/password/update", name="account_password")
+     * 
+     * @return Response
+     * 
+     */
+    public function updatePassword()
+    {
+
+        $passwordUpdate = new PasswordUpdate();
+
+        $form = $this->createForm(PasswordUpdate::class, $passwordUpdate);
+
+        return $this->render(
+            'account/password.html.twig',
+            ['form' => $form->createView()]
         );
     }
 }
