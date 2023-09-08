@@ -61,14 +61,22 @@
 			<div class="col">
 				{% set a = ad.author %}
 				<div class="row">
-					<div class="col-2">
-						<img src="{{ a.picture}}" class="avatar avatar-medium" alt="Avatar de {{ a.fullName }}">
+					<div class="col-3">
+						<a href="{{path('user_show', {'slug': a.slug})}}">
+							<img src="{{ a.picture}}" class="avatar avatar-medium" alt="Avatar de {{ a.fullName }}">
+						</a>
 					</div>
 
 					<div class="col">
-						<h3>{{ a.fullName }}</h3>
-						<span class="badge badge-primary text-danger">{{ a.ads | length }}
-							annonces
+						<a href="{{path('user_show', {'slug': a.slug})}}">
+							<h3>{{ a.fullName }}</h3>
+						</a>
+						<span class="badge bg-primary">{{ a.ads | length }}
+							{% if a.ads | length > 1 %}
+								annonces
+							{% else %}
+								annonce
+							{% endif %}
 						</span>
 					</div>
 					{{ a.description | raw }}
