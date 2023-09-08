@@ -95,6 +95,11 @@ class User implements UserInterface
      */
     private $securityCode;
 
+    public function getFullName()
+    {
+        return "{$this->firstName} {$this->lastName}";
+    }
+
 
     public function __construct()
     {
