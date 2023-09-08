@@ -23,3 +23,8 @@ div.ad-title h1, div.ad-title p {
     max-width: 64px;
     max-height: 64px;
 }
+
+.avatar-mini {
+    width: 40px; /* Adjust this value to your desired width */
+    height: 40px; /* Adjust this value to your desired height */
+}

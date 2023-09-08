@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Ad;
+use App\Entity\User;
 use App\Entity\Image;
 use App\Form\AdType;
 use App\Repository\AdRepository;
@@ -44,6 +45,7 @@ class AdController extends AbstractController
     public function create(Request $request, EntityManagerInterface $manager)
     {
 
+
         $ad = new Ad();
 
         $image = new Image();
@@ -60,6 +62,8 @@ class AdController extends AbstractController
                 $image->setAd($ad);
                 $manager->persist($image);
             }
+
+            $ad->setAuthor($this->getUser());
 
             $manager->persist($ad);
             $manager->flush();
