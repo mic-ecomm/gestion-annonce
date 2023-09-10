@@ -2,18 +2,19 @@
 
 namespace App\Controller;
 
-use App\Entity\PasswordUpdate;
 use App\Entity\User;
 use App\Form\AccountType;
+use App\Entity\PasswordUpdate;
 use App\Form\RegistrationType;
 use App\Form\PasswordUpdateType;
+use Symfony\Component\Form\FormError;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -99,7 +100,7 @@ class AccountController extends AbstractController
      * Qui permet d'afficher le formulaire d'inscription
      * 
      * @Route("/account/profile", name="account_profile")
-     * 
+     * @IsGranted("ROLE_USER")
      * @return Response
      * 
      */
@@ -129,6 +130,7 @@ class AccountController extends AbstractController
      * Permet de modifier le mot de passe
      * 
      * @Route("/account/password/update-password", name="account_password")
+     * @IsGranted()
      * 
      * @return Response
      * 
@@ -167,6 +169,7 @@ class AccountController extends AbstractController
 
         return $this->render(
             'account/password.html.twig',
+            
             ['form' => $form->createView()]
         );
     }

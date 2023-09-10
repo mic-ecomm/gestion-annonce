@@ -20,6 +20,11 @@
 			</p>
 
 			<a href="#" class="btn btn-primary">Réserver !</a>
+			{% if ad.author is same as(app.user) %}
+				<a href="{{ path('ads_edit', {'slug': ad.slug})}}" class="btn btn-secondary">Modifier l'annonce</a>
+				<a href="{{ path('ads_delete', {'slug': ad.slug})}}" class="btn btn-danger" onclick="retun confirm( `Voulez-vous vraiment supprimer cet annonce: {{ ad.title }} ?`)">Supprimer l'annonce</a>
+			{% endif %}
+
 		</div>
 	</div>
 
